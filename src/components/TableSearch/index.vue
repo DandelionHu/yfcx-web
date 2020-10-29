@@ -507,7 +507,6 @@ export default {
     // 查询 触发表单提交，也就是搜索按钮
     handleSubmit(e) {
       e.preventDefault()
-      console.log('处理前的表单数据', this.formData)
       const queryParams = this.handleParams(this.formData)
       this.$emit('change', { queryParams, type: 'submit' })
     },
@@ -515,13 +514,11 @@ export default {
     resetSearchForm() {
       // 重置整个查询表单
       this.addDefaultValue()
-      console.log('处理前的表单数据', this.formData)
       const queryParams = this.handleParams(this.formData)
       this.$emit('change', { queryParams, type: 'reset' })
     },
     // 筛选
     handleFiltrate() {
-      console.log('处理前的表单数据', this.formData)
       const queryParams = this.handleParams(this.formData)
       this.$emit('change', { queryParams, type: 'filtrate' })
     },

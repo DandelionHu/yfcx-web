@@ -38,6 +38,9 @@ export default {
     // 获取全部路由
     routes() {
       return this.$store.getters.permission_routes
+    },
+    supportPinyinSearch() {
+      return this.$store.state.settings.supportPinyinSearch
     }
   },
   watch: {
@@ -46,6 +49,9 @@ export default {
     },
     // 搜索路由变化
     searchPool(list) {
+      if (this.supportPinyinSearch) {
+        this.addPinyinField(list)
+      }
       this.initFuse(list)
     },
     // 监听显示
@@ -63,6 +69,24 @@ export default {
     this.searchPool = this.generateRoutes(this.routes)
   },
   methods: {
+    // 拼音
+    async addPinyinField(list) {
+      const { default: pinyin } = await import('pinyin')
+      if (Array.isArray(list)) {
+        list.forEach(element => {
+          const title = element.title
+          if (Array.isArray(title)) {
+            title.forEach(v => {
+              v = pinyin(v, {
+                style: pinyin.STYLE_NORMAL
+              }).join('')
+              element.pinyinTitle = v
+            })
+          }
+        })
+        return list
+      }
+    },
     // 点击搜索按钮
     click() {
       this.show = !this.show
@@ -100,6 +124,9 @@ export default {
         keys: [{
           name: 'title',
           weight: 0.7
+        }, {
+          name: 'pinyinTitle',
+          weight: 0.3
         }, {
           name: 'path',
           weight: 0.3

@@ -12,7 +12,7 @@
       :table-column="tableColumn"
       :table-data="tableData"
       :operate="operate"
-      :page-total="pageTotal"
+      :pagination="pagination"
       @currentChange="getList"
       @handleEdit="handleEdit"
       @handleDelete="handleDelete"
@@ -48,7 +48,11 @@ export default {
   },
   data() {
     return {
-      pageTotal: 0, // 总条数
+      pagination: {
+        size: 10,
+        page: 1,
+        pageTotal: 0 // 总条数
+      },
       tableColumn: [
         { prop: 'title', label: '标题' },
         { prop: 'content', label: '内容' },
@@ -111,10 +115,11 @@ export default {
   },
   async created() {
     this.loading = true
-    await this.getList({
-      page: 1,
-      size: 10
-    })
+    const obj = {
+      size: this.pagination.size,
+      page: this.pagination.page
+    }
+    await this.getList(obj)
     this.loading = false
   },
   methods: {
@@ -140,7 +145,7 @@ export default {
       const requestParameters = Object.assign({}, this.queryParam, { groups: this.groups }, obj || {})
       const res = await baseFieldFindList(requestParameters)
       this.tableData = res.returnValue
-      this.pageTotal = res.totals
+      this.pagination.pageTotal = res.totals
     },
     // 添加
     handleAdd() {
@@ -186,7 +191,7 @@ export default {
         const { returnValue: res } = await baseFieldDeleteAll(obj)
         if (res) {
           this.$message.success('删除成功')
-          this.getList()
+          this.getList(this.$refs.stable.getPage())
         }
       }).catch(() => {
         console.log('取消')

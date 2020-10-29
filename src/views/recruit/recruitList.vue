@@ -13,7 +13,7 @@
         :table-column="tableColumn"
         :table-data="tableData"
         :operate="operate"
-        :page-total="pageTotal"
+        :pagination="pagination"
         :operate-width="operateWidth"
         @currentChange="getList"
         @handleInfo="handleInfo"
@@ -64,7 +64,11 @@ export default {
     return {
       loading: false,
       operateWidth: '250px',
-      pageTotal: 0, // 总条数
+      pagination: {
+        size: 10,
+        page: 1,
+        pageTotal: 0 // 总条数
+      },
       tableColumn: [
         { prop: 'title', label: '标题' },
         { prop: 'fieldName', label: '招聘类型' },
@@ -162,10 +166,11 @@ export default {
   async created() {
     this.loading = true
     this.getTag()
-    await this.getList({
-      page: 1,
-      size: 10
-    })
+    const obj = {
+      size: this.pagination.size,
+      page: this.pagination.page
+    }
+    await this.getList(obj)
     this.loading = false
   },
   mounted() {
@@ -193,7 +198,7 @@ export default {
       const requestParameters = Object.assign({}, this.queryParam, obj || {})
       const res = await baseRecruitFindList(requestParameters)
       this.tableData = res.returnValue
-      this.pageTotal = res.totals
+      this.pagination.pageTotal = res.totals
     },
     // 获取招聘类型
     async getTag() {
@@ -243,7 +248,7 @@ export default {
         const { returnValue: res } = await baseRecruitDeleteAll(obj)
         if (res) {
           this.$message.success('删除成功')
-          this.getList()
+          this.getList(this.$refs.stable.getPage())
         }
       }).catch(() => {
         console.log('取消')

@@ -214,8 +214,7 @@ export function objectMerge(target, source) {
 }
 
 /**
- * @param {HTMLElement} element
- * @param {string} className
+ * 切换classname
  */
 export function toggleClass(element, className) {
   if (!element || !className) {
@@ -234,8 +233,7 @@ export function toggleClass(element, className) {
 }
 
 /**
- * @param {string} type
- * @returns {Date}
+ * 获取时间
  */
 export function getTime(type) {
   if (type === 'start') {
@@ -287,11 +285,7 @@ export function debounce(func, wait, immediate) {
 }
 
 /**
- * This is just a simple version of deep copy
- * Has a lot of edge cases bug
- * If you want to use a perfect deep copy, use lodash's _.cloneDeep
- * @param {Object} source
- * @returns {Object}
+ *对象深度复制
  */
 export function deepClone(source) {
   if (!source && typeof source !== 'object') {
@@ -309,15 +303,14 @@ export function deepClone(source) {
 }
 
 /**
- * @param {Array} arr
- * @returns {Array}
+ * 数组去重
  */
 export function uniqueArr(arr) {
   return Array.from(new Set(arr))
 }
 
 /**
- * @returns {string}
+ * 生成一个唯一的字符串
  */
 export function createUniqueString() {
   const timestamp = +new Date() + ''
@@ -326,32 +319,25 @@ export function createUniqueString() {
 }
 
 /**
- * Check if an element has a class
- * @param {HTMLElement} elm
- * @param {string} cls
- * @returns {boolean}
+ * 检查是否包含某个class
  */
 export function hasClass(ele, cls) {
   return !!ele.className.match(new RegExp('(\\s|^)' + cls + '(\\s|$)'))
 }
 
 /**
- * Add class to element
- * @param {HTMLElement} elm
- * @param {string} cls
+ * 添加class
  */
 export function addClass(ele, cls) {
   if (!hasClass(ele, cls)) ele.className += ' ' + cls
 }
 
 /**
- * Remove class from element
- * @param {HTMLElement} elm
- * @param {string} cls
+ * 移除class
  */
 export function removeClass(ele, cls) {
   if (hasClass(ele, cls)) {
     const reg = new RegExp('(\\s|^)' + cls + '(\\s|$)')
-    ele.className = ele.className.replace(reg, ' ')
+    ele.className = ele.className.replace(reg, '')
   }
 }

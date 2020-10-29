@@ -8,7 +8,7 @@
         :background-color="variables.menuBg"
         :text-color="variables.menuText"
         :unique-opened="false"
-        :active-text-color="variables.menuActiveText"
+        :active-text-color="theme"
         :collapse-transition="false"
         mode="vertical"
       >
@@ -24,6 +24,7 @@ import Logo from './Logo'
 import SidebarItem from './SidebarItem'
 // 加载css
 import variables from '@/styles/variables.scss'
+import custom from '@/styles/custom.scss'
 
 export default {
   components: { SidebarItem, Logo },
@@ -46,9 +47,21 @@ export default {
     showLogo() {
       return this.$store.state.settings.sidebarLogo
     },
+    // 换肤
+    skinPeeler() {
+      return this.$store.state.settings.skinPeeler
+    },
+    // 主题色
+    theme() {
+      return this.$store.state.settings.theme
+    },
     // 颜色
     variables() {
-      return variables
+      if (this.skinPeeler) {
+        return custom
+      } else {
+        return variables
+      }
     },
     // 折叠
     isCollapse() {

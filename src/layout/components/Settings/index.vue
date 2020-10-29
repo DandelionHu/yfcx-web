@@ -2,7 +2,7 @@
   <div class="drawer-container">
     <h3 class="drawer-title">系统布局配置</h3>
     <div class="drawer-item">
-      <span>主题色</span>
+      <span>按钮主题色</span>
       <theme-picker style="float: right;height: 26px;margin: -3px 8px 0 0;" @change="themeChange" />
     </div>
     <div class="drawer-item">
@@ -17,12 +17,26 @@
       <span>侧边栏 Logo</span>
       <el-switch v-model="sidebarLogo" class="drawer-switch" />
     </div>
+    <div class="drawer-item">
+      <span>色弱模式</span>
+      <el-switch v-model="colorWeak" class="drawer-switch" />
+    </div>
+    <div class="drawer-item">
+      <span>换肤</span>
+      <el-switch v-model="skinPeeler" class="drawer-switch" />
+    </div>
+    <div class="drawer-item">
+      <span>菜单支持拼音搜索</span>
+      <el-switch v-model="supportPinyinSearch" class="drawer-switch" />
+    </div>
   </div>
 </template>
 
 <script>
 // 颜色选择器
 import ThemePicker from '@/components/ThemePicker'
+import { addClass, removeClass } from '@/utils'
+import '@/assets/custom-theme/index.css' // the theme changed version element-ui css
 
 export default {
   components: { ThemePicker },
@@ -62,6 +76,57 @@ export default {
           value: val
         })
       }
+    },
+    colorWeak: {
+      get() {
+        return this.$store.state.settings.colorWeak
+      },
+      set(val) {
+        this.$store.dispatch('settings/changeSetting', {
+          key: 'colorWeak',
+          value: val
+        })
+      }
+    },
+    skinPeeler: {
+      get() {
+        return this.$store.state.settings.skinPeeler
+      },
+      set(val) {
+        this.$store.dispatch('settings/changeSetting', {
+          key: 'skinPeeler',
+          value: val
+        })
+      }
+    },
+    supportPinyinSearch: {
+      get() {
+        return this.$store.state.settings.supportPinyinSearch
+      },
+      set(val) {
+        this.$store.dispatch('settings/changeSetting', {
+          key: 'supportPinyinSearch',
+          value: val
+        })
+      }
+    }
+  },
+  watch: {
+    colorWeak: {
+      handler: function(val, oldVal) {
+        this.updateColorWeak(val)
+      },
+      immediate: true
+    },
+    skinPeeler: {
+      handler: function(val, oldVal) {
+        if (val) {
+          addClass(document.body, 'custom-theme')
+        } else {
+          removeClass(document.body, 'custom-theme')
+        }
+      },
+      immediate: true
     }
   },
   methods: {
@@ -71,6 +136,10 @@ export default {
         key: 'theme',
         value: val
       })
+    },
+    // 色弱
+    updateColorWeak(colorWeak) {
+      document.documentElement.className = colorWeak ? 'colorWeak' : ''
     }
   }
 }

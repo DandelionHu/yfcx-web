@@ -295,7 +295,6 @@ export default {
           treeData.push(obj)
         }
       })
-      console.log(treeData)
       this.treeData = treeData
     },
     // 获取子节点
@@ -327,23 +326,6 @@ export default {
     handleNodeClick(data) {
       this.selectedKeys = data.key
       this.getDetail(data.key)
-    },
-    // 改变显示问题
-    changeDataSource(type) {
-      if (type === 2) {
-        this.formDataSource.forEach((v, i) => {
-          if (v.show) {
-            v.show = !v.show
-          }
-        })
-      } else if (type === 1) {
-        console.log(this.formDataSource)
-        // this.formDataSource.forEach((v, i) => {
-        //   if (v.show === false) {
-        //     v.show = !v.show
-        //   }
-        // })
-      }
     },
     // 获取详情
     async getDetail(id) {

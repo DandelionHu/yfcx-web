@@ -1,3 +1,4 @@
+<!--折线图-->
 <template>
   <div :id="id" :class="className" :style="{height:height,width:width}" />
 </template>
@@ -49,7 +50,7 @@ export default {
         backgroundColor: '#394056',
         title: {
           top: 20,
-          text: 'Requests',
+          text: '请求',
           textStyle: {
             fontWeight: 'normal',
             fontSize: 16,
@@ -71,7 +72,7 @@ export default {
           itemWidth: 14,
           itemHeight: 5,
           itemGap: 13,
-          data: ['CMCC', 'CTCC', 'CUCC'],
+          data: ['微信', 'App', 'H5'],
           right: '4%',
           textStyle: {
             fontSize: 12,
@@ -119,7 +120,7 @@ export default {
           }
         }],
         series: [{
-          name: 'CMCC',
+          name: '微信',
           type: 'line',
           smooth: true,
           symbol: 'circle',
@@ -153,7 +154,7 @@ export default {
           },
           data: [220, 182, 191, 134, 150, 120, 110, 125, 145, 122, 165, 122]
         }, {
-          name: 'CTCC',
+          name: 'App',
           type: 'line',
           smooth: true,
           symbol: 'circle',
@@ -187,7 +188,7 @@ export default {
           },
           data: [120, 110, 125, 145, 122, 165, 122, 220, 182, 191, 134, 150]
         }, {
-          name: 'CUCC',
+          name: 'H5',
           type: 'line',
           smooth: true,
           symbol: 'circle',

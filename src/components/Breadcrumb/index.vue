@@ -28,7 +28,6 @@ export default {
   watch: {
     // 监听路由
     $route(route) {
-      console.log(route)
       // 不包含重定向路径
       if (route.path.startsWith('/redirect/')) {
         return

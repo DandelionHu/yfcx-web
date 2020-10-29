@@ -61,14 +61,14 @@
       </el-table-column>
     </el-table>
     <el-pagination
-      v-show="currentData.length>0"
       v-if="pagination"
       class="pagination"
       background
       layout="total, sizes, prev, pager, next, jumper"
-      :page-sizes="pagination.pageSizes"
+      :page-sizes="pageSizes"
       :page-size="pageObj.size"
-      :total="pageTotal"
+      :total="pagination.pageTotal"
+      :current-page="currentPage"
       @current-change="currentChange"
       @size-change="handleSizeChange"
     />
@@ -150,15 +150,11 @@ export default {
       type: [Object, Boolean],
       default: function() {
         return {
-          pageSize: 10, // 每页多少条
-          pageSizes: [10, 20, 50, 100, 500, 1000]
+          size: 10, // 每页多少条
+          pageTotal: 0,
+          page: 1
         }
       }
-    },
-    // 总条数
-    pageTotal: {
-      type: Number,
-      default: 0
     },
     // 边框
     border: {
@@ -188,6 +184,7 @@ export default {
   },
   data() {
     return {
+      pageSizes: [10, 20, 50, 100, 500, 1000],
       height: variables.tableMaxHeight,
       filterTableColumn: [], // 定制展示的列
       currentPage: '', // 当前选中页
@@ -198,7 +195,7 @@ export default {
       oldKey: [], // 上一次选中数据的key
       currentIndex: '', // 当前索引，切换页面的时候需要重新计算
       rowClassName: '', // 行样式
-      pageObj: {}
+      pageObj: {} // 给外部
     }
   },
   computed: {
@@ -257,6 +254,10 @@ export default {
         // 分页配置
         if (this.pageObj && this.pageObj.size) {
           this.currentData = this.tableData.filter((item, index) => index < this.pageObj.size)
+          if (this.currentData.length === 0 && this.pageObj.page > 1) {
+            // 最后一页数据为空  往前翻一页
+            this.currentChange(this.pageObj.page - 1)
+          }
         } else {
           this.currentData = this.tableData
         }
@@ -279,10 +280,10 @@ export default {
   },
   created() {
     // 初始化分页
-    this.pageObj.size = this.pagination.pageSize
-    this.pageObj.page = 1
-    this.currentPage = 1
-    this.currentIndex = 1
+    this.pageObj.size = this.pagination.size
+    this.pageObj.page = this.pagination.page
+    this.currentPage = this.pagination.page
+    this.currentIndex = this.pagination.page
   },
   beforeMount() {
     // 先放在session里，因为每次切换页码table都会重新渲染，之前选中都数据就丢失了  sessionstorage在create里面打包会提示undefined
@@ -350,11 +351,11 @@ export default {
       this.pageObj.page = page
       const currentSelectedData = []
       this.oldVal = []
-      this.currentPage = page
+      this.currentPage = page // 当前选中页
       this.selectedTableData = JSON.parse(sessionStorage.getItem('selectedTableData'))
-      // 过滤
-      this.currentData = this.tableData.filter((item, index) => index >= (this.currentPage - 1) * this.pageObj.size &&
-                index < this.currentPage * this.pageObj.size)
+      // 过滤,前端分页用
+      // this.currentData = this.tableData.filter((item, index) => index >= (this.currentPage - 1) * this.pageObj.size &&
+      //           index < this.currentPage * this.pageObj.size)
       this.$emit('currentChange', this.pageObj)
       // 已选中的数据打勾
       this.selectedTableData.forEach(item => {
@@ -418,6 +419,10 @@ export default {
       } else {
         this.$emit('currentChange', this.pageObj)
       }
+    },
+    // 获取页码
+    getPage() {
+      return this.pageObj
     }
     // 拖拽
     // setDrag() {

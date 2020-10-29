@@ -96,6 +96,15 @@
 .el-table__fixed-right-patch{
   background: #f2f2f2 !important;
 }
+.el-table .caret-wrapper{
+  height: 22px !important;
+}
+.el-table .sort-caret.ascending{
+  top:0px !important;
+}
+.el-table .sort-caret.descending{
+  bottom:0px !important;
+}
 // form
 .el-input__inner{
   border-radius:0px !important;

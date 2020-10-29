@@ -4,6 +4,9 @@ module.exports = {
   tagsView: true,
   fixedHeader: true,
   sidebarLogo: true,
+  colorWeak: false,
+  skinPeeler: false,
+  supportPinyinSearch: true,
   /**
    * If you want to also use it in dev, you can pass ['production', 'development']
    */
