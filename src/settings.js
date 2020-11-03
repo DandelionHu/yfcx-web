@@ -5,8 +5,9 @@ module.exports = {
   fixedHeader: true,
   sidebarLogo: true,
   colorWeak: false,
-  skinPeeler: false,
+  skinPeeler: '#192A5E',
   supportPinyinSearch: true,
+  onePageRow: 10,
   /**
    * If you want to also use it in dev, you can pass ['production', 'development']
    */

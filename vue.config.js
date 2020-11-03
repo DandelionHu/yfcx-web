@@ -37,6 +37,14 @@ module.exports = {
         target: 'http://192.168.0.194:8080/',
         ws: false,
         changeOrigin: true
+      },
+      '/mapVideo': {
+        target: 'http://121.37.228.244:7080/',
+        ws: false,
+        changeOrigin: true,
+        pathRewrite: {
+          '^/mapVideo': ''
+        }
       }
     }
   },

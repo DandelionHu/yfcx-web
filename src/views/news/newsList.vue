@@ -1,6 +1,17 @@
 <template>
-  <div class="app-container">新闻列表</div>
+  <div class="app-container">
+    新闻列表
+  </div>
 </template>
 <script>
-export default {}
+export default {
+  data() {
+    return {
+
+    }
+  },
+  methods: {
+
+  }
+}
 </script>

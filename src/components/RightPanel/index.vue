@@ -108,14 +108,14 @@ export default {
   transition: all .25s cubic-bezier(.7, .3, .1, 1);
   transform: translate(100%);
   background: #fff;
-  z-index: 40000;
+  z-index: 400;
 }
 
 .show {
   transition: all .3s cubic-bezier(.7, .3, .1, 1);
 
   .rightPanel-background {
-    z-index: 20000;
+    z-index: 200;
     opacity: 1;
     width: 100%;
     height: 100%;

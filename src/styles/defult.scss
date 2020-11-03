@@ -1,0 +1,41 @@
+// base color
+$blue:#324157;
+$light-blue:#3A71A8;
+$red:#C03639;
+$pink: #E65D6E;
+$green: #30B08F;
+$tiffany: #4AB7BD;
+$yellow:#FEC171;
+$panGreen: #30B08F;
+
+// sidebar
+$menuText:#bfcbd9;
+$menuActiveText:#409EFF;
+$subMenuActiveText:#f4f4f5; // https://github.com/ElemeFE/element/issues/12951
+
+$menuBg:#001529; // 导航背景色
+$menuHover:#02284B; // 鼠标移过色
+
+$subMenuBg:#000C17; // 导航打开背景色
+$subMenuHover:#042c50;// 导航打开鼠标移过色
+
+$sideBarWidth: 180px; // 导航宽度
+$sideBarHeight: 50px; // 导航高度
+
+$pageBackground:#f9fafb;// 页面背景色
+
+$tableMaxHeight: 600px;// table最大高度
+
+// the :export directive is the magic sauce for webpack
+// 输出成对象，在js中调用
+:export {
+  menuText: $menuText;
+  menuActiveText: $menuActiveText;
+  subMenuActiveText: $subMenuActiveText;
+  menuBg: $menuBg;
+  menuHover: $menuHover;
+  subMenuBg: $subMenuBg;
+  subMenuHover: $subMenuHover;
+  sideBarWidth: $sideBarWidth;
+  tableMaxHeight: $tableMaxHeight;
+}

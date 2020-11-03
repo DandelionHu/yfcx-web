@@ -1,6 +1,7 @@
 // import parseTime, formatTime and set to filter
 export { parseTime, formatTime } from '@/utils'
 import moment from 'moment'
+import toFixed from 'num-tofixed'
 import 'moment/locale/zh-cn'
 moment.locale('zh-cn')
 
@@ -61,15 +62,27 @@ export function numberFormatter(num, digits) {
 export function toThousandFilter(num) {
   return (+num || 0).toString().replace(/^-?\d+/g, m => m.replace(/(?=(?!\b)(\d{3})+$)/g, ','))
 }
-
+// 千克转换吨,保留几位小数
+export function KGTonne(val, digits) {
+  digits = digits || 5
+  return toFixed((val / 1000), digits, true)
+}
+// 四舍五入
+export function rounded(val, digits) {
+  digits = digits || 2
+  return toFixed(val, digits, true)
+}
+// 截取
+export function cutOut(val, digits) {
+  digits = digits || 2
+  return toFixed(val, digits, false)
+}
 /**
- * abc => "Abc"
-  首字母大写
+ * abc => "Abc" 首字母大写
  */
 export function uppercaseFirst(string) {
   return string.charAt(0).toUpperCase() + string.slice(1)
 }
-
 // 过滤 毫秒 转换成日期
 export function dayjs(dataStr, pattern = 'YYYY-MM-DD HH:mm:ss') {
   return moment(dataStr).format(pattern)

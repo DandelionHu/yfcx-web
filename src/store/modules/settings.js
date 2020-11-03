@@ -2,7 +2,7 @@ import variables from '@/styles/element-variables.scss'
 import defaultSettings from '@/settings'
 import storage from 'store'
 
-const { showSettings, tagsView, fixedHeader, colorWeak, supportPinyinSearch, sidebarLogo, skinPeeler } = defaultSettings
+const { showSettings, tagsView, fixedHeader, colorWeak, supportPinyinSearch, sidebarLogo, skinPeeler, onePageRow } = defaultSettings
 
 const state = {
   theme: storage.get('theme', variables.theme),
@@ -12,7 +12,8 @@ const state = {
   sidebarLogo: storage.get('sidebarLogo', sidebarLogo),
   colorWeak: storage.get('colorWeak', colorWeak),
   skinPeeler: storage.get('skinPeeler', skinPeeler),
-  supportPinyinSearch: storage.get('supportPinyinSearch', supportPinyinSearch)
+  supportPinyinSearch: storage.get('supportPinyinSearch', supportPinyinSearch),
+  onePageRow: storage.get('onePageRow', onePageRow)
 }
 
 const mutations = {

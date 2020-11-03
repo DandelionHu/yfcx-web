@@ -1,14 +1,12 @@
 import axios from 'axios'
 import { MessageBox, Message } from 'element-ui'
 import store from '@/store'
-import { getToken } from '@/utils/auth'
-import qs from 'qs'
+import { getToken } from '@/utils/videoAuth'
 // 请求白名单
-const whiteUrl = ['/managerLogin']
+const whiteUrl = ['/login.do']
 // 创建 axios 实例
 const service = axios.create({
-  baseURL: '/yfcxWebsite', // url = base url + request url
-  // withCredentials: true, // 当跨域请求时发送cookie
+  baseURL: '/mapVideo', // url = base url + request url
   timeout: 5000 // request timeout
 })
 
@@ -21,48 +19,22 @@ service.interceptors.request.use(config => {
       config.headers['token'] = getToken()
     }
   }
-
-  // 检测是否包含文件类型
-  let hasFile = false
-  // 循环data，检测是否有数组
-  for (const key in config.data) {
-    const item = config.data[key]
-    if (item instanceof FileList || item instanceof File || item instanceof Blob) {
-      hasFile = true
-    }
-    if (Array.isArray(config.data[key])) {
-      // 是数组,阻止深度序列化
-      config.data = qs.stringify(config.data, { indices: false })
-      return config
-    }
-  }
-  // 处理提交参数
-  if (!hasFile) {
-    config.data = qs.stringify(config.data) // 转为formdata数据格式
-  } else {
-    // 检测到存在文件使用 FormData 提交数据
-    const formData = new FormData()
-    Object.keys(config.data).forEach(key => {
-      formData.append(key, config.data[key])
-    })
-    config.data = formData
-  }
   return config
 }, errorHandler)
 
 // 响应拦截
 service.interceptors.response.use(response => {
-  const { code, message, isSuccess } = response.data
-  if (code !== -1 && isSuccess) {
+  const { Code, Msg, Ok } = response.data
+  if (Code === 0 && Ok) {
     // 获取数据成功
     return response.data
   } else {
     Message({
-      message: message || 'Error',
+      message: Msg || 'Error',
       type: 'error',
       duration: 5 * 1000
     })
-    return Promise.reject(new Error(message || 'Error'))
+    return Promise.reject(new Error(Msg || 'Error'))
   }
 }, errorHandler)
 // 异常拦截处理器

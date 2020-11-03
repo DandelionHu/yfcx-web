@@ -8,7 +8,7 @@
         :background-color="variables.menuBg"
         :text-color="variables.menuText"
         :unique-opened="false"
-        :active-text-color="theme"
+        :active-text-color="variables.$menuActiveText"
         :collapse-transition="false"
         mode="vertical"
       >
@@ -25,6 +25,8 @@ import SidebarItem from './SidebarItem'
 // 加载css
 import variables from '@/styles/variables.scss'
 import custom from '@/styles/custom.scss'
+import defult from '@/styles/defult.scss'
+import white from '@/styles/white.scss'
 
 export default {
   components: { SidebarItem, Logo },
@@ -57,10 +59,14 @@ export default {
     },
     // 颜色
     variables() {
-      if (this.skinPeeler) {
-        return custom
-      } else {
+      if (this.skinPeeler === '#192A5E') {
         return variables
+      } else if (this.skinPeeler === '#304156') {
+        return custom
+      } else if (this.skinPeeler === '#52C41A') {
+        return white
+      } else {
+        return defult
       }
     },
     // 折叠

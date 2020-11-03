@@ -23,11 +23,30 @@
     </div>
     <div class="drawer-item">
       <span>换肤</span>
-      <el-switch v-model="skinPeeler" class="drawer-switch" />
+      <div class="top">
+        <el-tooltip v-for="(item, index) in colorList" :key="index" class="item" effect="dark" :content="item.key" placement="top">
+          <el-tag :color="item.color" @click="changeColor(item.color)">
+            <i v-if="item.color === skinPeeler" class="el-icon-check" />
+          </el-tag>
+        </el-tooltip>
+      </div>
     </div>
     <div class="drawer-item">
       <span>菜单支持拼音搜索</span>
       <el-switch v-model="supportPinyinSearch" class="drawer-switch" />
+    </div>
+    <div class="drawer-item">
+      <span>条数</span>
+      <div class="drawer-select">
+        <el-select v-model="onePageRow" placeholder="请选择">
+          <el-option
+            v-for="item in pageSizes"
+            :key="item"
+            :label="item"
+            :value="item"
+          />
+        </el-select>
+      </div>
     </div>
   </div>
 </template>
@@ -37,11 +56,29 @@
 import ThemePicker from '@/components/ThemePicker'
 import { addClass, removeClass } from '@/utils'
 import '@/assets/custom-theme/index.css' // the theme changed version element-ui css
+import '@/assets/defult-theme/index.css' // the theme changed version element-ui css
+import '@/assets/white-theme/index.css' // the theme changed version element-ui css
 
 export default {
   components: { ThemePicker },
   data() {
-    return {}
+    return {
+      colorList: [
+        {
+          key: '深蓝色（默认）', color: '#192A5E', theme: ''
+        },
+        {
+          key: '深灰色', color: '#304156', theme: 'custom-theme'
+        },
+        {
+          key: '紫色', color: '#4056FF', theme: 'defult-theme'
+        },
+        {
+          key: '绿色', color: '#52C41A', theme: 'white-theme'
+        }
+      ],
+      pageSizes: [10, 20, 50, 100, 500, 1000]
+    }
   },
   computed: {
     fixedHeader: {
@@ -88,16 +125,8 @@ export default {
         })
       }
     },
-    skinPeeler: {
-      get() {
-        return this.$store.state.settings.skinPeeler
-      },
-      set(val) {
-        this.$store.dispatch('settings/changeSetting', {
-          key: 'skinPeeler',
-          value: val
-        })
-      }
+    skinPeeler() {
+      return this.$store.state.settings.skinPeeler
     },
     supportPinyinSearch: {
       get() {
@@ -106,6 +135,17 @@ export default {
       set(val) {
         this.$store.dispatch('settings/changeSetting', {
           key: 'supportPinyinSearch',
+          value: val
+        })
+      }
+    },
+    onePageRow: {
+      get() {
+        return this.$store.state.settings.onePageRow
+      },
+      set(val) {
+        this.$store.dispatch('settings/changeSetting', {
+          key: 'onePageRow',
           value: val
         })
       }
@@ -120,10 +160,14 @@ export default {
     },
     skinPeeler: {
       handler: function(val, oldVal) {
-        if (val) {
-          addClass(document.body, 'custom-theme')
-        } else {
-          removeClass(document.body, 'custom-theme')
+        const { theme } = this.colorList.filter((item) => {
+          return item.color === val
+        })[0]
+        removeClass(document.body, 'defult-theme')
+        removeClass(document.body, 'custom-theme')
+        removeClass(document.body, 'white-theme')
+        if (theme) {
+          addClass(document.body, theme)
         }
       },
       immediate: true
@@ -140,6 +184,13 @@ export default {
     // 色弱
     updateColorWeak(colorWeak) {
       document.documentElement.className = colorWeak ? 'colorWeak' : ''
+    },
+    // 换肤
+    changeColor(color) {
+      this.$store.dispatch('settings/changeSetting', {
+        key: 'skinPeeler',
+        value: color
+      })
     }
   }
 }
@@ -160,13 +211,33 @@ export default {
     }
 
     .drawer-item {
-      color: rgba(0, 0, 0, .65);
+      color: rgba(0, 0, 0, 0.65);
       font-size: 14px;
       padding: 12px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      .top{
+        display: flex;
+        .item{
+          height: 26px;
+          padding: 0 6px;
+          width: 26px;
+          margin-right: 10px;
+          cursor: pointer;
+          line-height: 26px;
+          color: #fff;
+        }
+      }
     }
 
     .drawer-switch {
       float: right
+    }
+    .drawer-select{
+      float: right;
+      width: 100px;
     }
   }
 </style>

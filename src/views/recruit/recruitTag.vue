@@ -48,11 +48,7 @@ export default {
   },
   data() {
     return {
-      pagination: {
-        size: 10,
-        page: 1,
-        pageTotal: 0 // 总条数
-      },
+      pagination: {},
       tableColumn: [
         { prop: 'title', label: '标题' },
         { prop: 'content', label: '内容' },
@@ -113,7 +109,17 @@ export default {
       editId: '' // 编辑id
     }
   },
+  computed: {
+    onePageRow() {
+      return this.$store.state.settings.onePageRow
+    }
+  },
   async created() {
+    this.pagination = {
+      size: this.onePageRow,
+      page: 1,
+      pageTotal: 0 // 总条数
+    }
     this.loading = true
     const obj = {
       size: this.pagination.size,

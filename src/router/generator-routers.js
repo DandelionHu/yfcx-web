@@ -17,6 +17,8 @@ const constantRouterComponents = {
   // 招聘列表
   'recruitList': () => import(/* webpackChunkName: "fail" */'@/views/recruit/recruitList'),
   'recruitTag': () => import(/* webpackChunkName: "fail" */'@/views/recruit/recruitTag'),
+  // 监控
+  'videoRealtime': () => import(/* webpackChunkName: "fail" */'@/views/monitoring/videoRealtime'),
   // 系统设置
   'managerList': () => import(/* webpackChunkName: "fail" */'@/views/baseManager/managerList'),
   'roleList': () => import(/* webpackChunkName: "fail" */'@/views/baseRole/roleList'),

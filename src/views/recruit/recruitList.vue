@@ -4,8 +4,11 @@
       <table-search :search-data-source="searchDataSource" @change="tableSearchChange">
         <template v-slot:extra>
           <el-button v-permission:recruitList_add type="success" @click="handleAdd">添加</el-button>
+          <el-button v-permission:recruitList_add type="warning" @click="handleExport">导出</el-button>
+          <el-button v-permission:recruitList_add type="danger" @click="handlePrint">打印</el-button>
         </template>
       </table-search>
+      <s-info />
       <s-table
         ref="stable"
         v-loading="loading"
@@ -31,24 +34,35 @@
         </span>
       </s-table>
     </div>
+    <!--添加页面-->
     <add-recruit v-if="showAdd" :edit-id="editId" @editClose="editClose" />
     <!-- 详情页面 -->
     <recruit-info v-if="showInfo" :edit-id="editId" @editClose="editClose" />
+    <!--打印页面-->
+    <recruit-print v-if="showPrint" :choose-data="chooseData" :query-param="queryParam" @editClose="editClose" />
+    <!--导出-->
+    <s-progress v-if="isExport" :percentage="percentage" type="circle" />
   </div>
 </template>
 <script>
 import STable from '@/components/STable'
+import SInfo from '@/components/SInfo'
 import TableSearch from '@/components/TableSearch'
+import SProgress from '@/components/SProgress'
 import { baseRecruitFindList, baseFieldFindList, baseRecruitDeleteAll } from '@/api/yfcxApi'
 import addRecruit from './addRecruit'
 import recruitInfo from './recruitInfo'
+import recruitPrint from './recruitPrint'
 export default {
   name: 'RecruitList',
   components: {
     STable,
+    SInfo,
     TableSearch,
+    SProgress,
     addRecruit,
-    recruitInfo
+    recruitInfo,
+    recruitPrint
   },
   // 过滤器
   filters: {
@@ -62,13 +76,10 @@ export default {
   },
   data() {
     return {
+      inputText: '',
       loading: false,
       operateWidth: '250px',
-      pagination: {
-        size: 10,
-        page: 1,
-        pageTotal: 0 // 总条数
-      },
+      pagination: {},
       tableColumn: [
         { prop: 'title', label: '标题' },
         { prop: 'fieldName', label: '招聘类型' },
@@ -160,10 +171,24 @@ export default {
       showList: true,
       showAdd: false,
       showInfo: false,
-      editId: '' // 编辑id
+      showPrint: false,
+      editId: '', // 编辑id
+      isExport: false,
+      percentage: 0,
+      chooseData: [] // 打印选中的项
+    }
+  },
+  computed: {
+    onePageRow() {
+      return this.$store.state.settings.onePageRow
     }
   },
   async created() {
+    this.pagination = {
+      size: this.onePageRow,
+      page: 1,
+      pageTotal: 0 // 总条数
+    }
     this.loading = true
     this.getTag()
     const obj = {
@@ -172,8 +197,6 @@ export default {
     }
     await this.getList(obj)
     this.loading = false
-  },
-  mounted() {
   },
   methods: {
     // 搜索
@@ -224,14 +247,12 @@ export default {
     handleInfo(data) {
       this.editId = data.row.id
       this.showList = false
-      this.showAdd = false
       this.showInfo = true
     },
     // 编辑
     handleEdit(data) {
       this.editId = data.row.id
       this.showList = false
-      this.showInfo = false
       this.showAdd = true
     },
     // 删除
@@ -259,8 +280,22 @@ export default {
       this.showList = true
       this.showAdd = false
       this.showInfo = false
+      this.showPrint = false
       // 刷新当前页
       this.$refs.stable.refresh()
+    },
+    // 导出
+    handleExport() {
+      this.isExport = true
+      setTimeout(() => {
+        this.percentage = 100
+        this.isExport = false
+      }, 10000)
+    },
+    // 打印
+    handlePrint() {
+      this.showList = false
+      this.showPrint = true
     }
   }
 }

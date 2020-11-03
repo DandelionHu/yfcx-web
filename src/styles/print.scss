@@ -1,0 +1,83 @@
+.print{
+
+}
+.print h1 {
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  line-height: 20px;
+  margin: 0px;
+  color: #000;
+  margin-bottom: 10px;
+}
+
+.print label {
+  font-size: 14px;
+  color: #000;
+  margin-right: 10px;
+  padding: 5px 0px;
+  display: inline-block
+}
+
+.table-print table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  box-sizing: border-box;
+  background:#fff;
+}
+
+.table-print th,
+.table-print td {
+  line-height: 20px;
+  padding: 5px 2px;
+  border: 1px solid #000 !important;
+  text-align: center;
+  font-size: 12px;
+  color: #000;
+  max-width: 100px;
+  word-wrap: break-word;
+  word-break: break-all;
+  width: auto;
+}
+.table-print th{
+  text-align: center;
+}
+
+.table-print table th.sequence,
+.table-print table td.sequence {
+  width: 28px;
+  max-width: 28px;
+}
+
+.table-print table thead th {
+  text-align: center;
+}
+
+.print a {
+  color: #000;
+  text-decoration: none;
+}
+
+*.no-print {
+  display: none
+}
+
+.print .pageNext {
+  page-break-after: always;
+}
+
+.print .flr {
+  float: right;
+}
+
+@media print {
+  body {
+    font-size: 12px;
+    color: #666;
+  }
+  @page {
+    size: auto A4 landscape;
+    margin: 4mm;
+  }
+}
