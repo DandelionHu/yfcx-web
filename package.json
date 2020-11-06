@@ -1,8 +1,8 @@
 {
-  "name": "vue-element-admin",
-  "version": "4.4.0",
-  "description": "A magical vue admin. An out-of-box UI solution for enterprise applications. Newest development stack of vue. Lots of awesome features",
-  "author": "Pan <panfree23@gmail.com>",
+  "name": "yfcx-web",
+  "version": "1.1.0",
+  "description": "官网后台",
+  "author": "胡旦旦",
   "scripts": {
     "dev": "vue-cli-service serve",
     "lint": "eslint --ext .js,.vue src",
@@ -23,6 +23,7 @@
     "echarts": "4.2.1",
     "element-ui": "2.13.2",
     "file-saver": "2.0.1",
+    "flv.js": "^1.5.0",
     "fuse.js": "3.4.4",
     "js-cookie": "2.2.0",
     "jsonlint": "1.6.3",

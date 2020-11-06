@@ -34,18 +34,24 @@ module.exports = {
     // 代理服务器
     proxy: {
       '/yfcxWebsite': {
-        target: 'http://192.168.0.194:8080/',
+        target: 'http://192.168.0.194:8081',
         ws: false,
         changeOrigin: true
       },
       '/mapVideo': {
-        target: 'http://121.37.228.244:7080/',
+        target: 'http://121.37.228.244:7080',
+        ws: false,
+        changeOrigin: true
+      },
+      '/videoFile': {
+        target: 'http://121.37.228.244:3580',
         ws: false,
         changeOrigin: true,
-        pathRewrite: {
-          '^/mapVideo': ''
-        }
+        pathRewrite: { '^/videoFile': '' }
       }
+    },
+    after(app) {
+      console.log(app)
     }
   },
   configureWebpack: {
@@ -79,6 +85,14 @@ module.exports = {
       .rule('svg')
       .exclude.add(resolve('src/icons'))
       .end()
+    config.module
+      .rule('swf')
+      .test(/\.swf$/)
+      .use('url-loader')
+      .loader('url-loader')
+      .options({
+        limit: 10000
+      })
     config.module
       .rule('icons')
       .test(/\.svg$/)

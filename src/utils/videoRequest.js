@@ -6,7 +6,7 @@ import { getToken } from '@/utils/videoAuth'
 const whiteUrl = ['/login.do']
 // 创建 axios 实例
 const service = axios.create({
-  baseURL: '/mapVideo', // url = base url + request url
+  baseURL: '', // url = base url + request url
   timeout: 5000 // request timeout
 })
 
@@ -16,7 +16,7 @@ service.interceptors.request.use(config => {
   const url = config.url.replace(config.baseURL, '') // 前缀替换
   if (!whiteUrl.some(item => url === item)) {
     if (store.getters.token) {
-      config.headers['token'] = getToken()
+      config.params.token = getToken()
     }
   }
   return config
@@ -24,8 +24,8 @@ service.interceptors.request.use(config => {
 
 // 响应拦截
 service.interceptors.response.use(response => {
-  const { Code, Msg, Ok } = response.data
-  if (Code === 0 && Ok) {
+  const { Msg, Ok } = response.data
+  if (Ok) {
     // 获取数据成功
     return response.data
   } else {
